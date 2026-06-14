@@ -23,10 +23,15 @@ def create_tables():
     conn.close()
 
 def get_today_birthdays():
-    today = date.today().strftime('%m-%d')
+    today = date.today()
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute('SELECT name, category, email FROM contacts WHERE birth_date = ?', (today,))
+    # Сравниваем месяц и день, игнорируя год
+    cur.execute('''
+        SELECT name, category, email 
+        FROM contacts 
+        WHERE strftime('%m', birth_date) = ? AND strftime('%d', birth_date) = ?
+    ''', (today.strftime('%m'), today.strftime('%d')))
     rows = cur.fetchall()
     conn.close()
     return rows

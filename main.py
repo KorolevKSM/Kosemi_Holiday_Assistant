@@ -1,4 +1,3 @@
-import asyncio
 from config import load_dotenv
 load_dotenv()
 
@@ -6,7 +5,7 @@ from database import create_tables, get_today_birthdays
 from templates import get_random_template
 from notifier import send_email
 
-async def main():
+def main():
     create_tables()
     birthdays = get_today_birthdays()
     if not birthdays:
@@ -23,4 +22,4 @@ async def main():
         send_email(email, subject, message)
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    main()
